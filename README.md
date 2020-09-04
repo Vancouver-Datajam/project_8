@@ -40,6 +40,7 @@ Create a visualization and/or analysis that sheds light on the location and type
 Here is a rough outline of our Datajam session. We can adjust as needed on the day of. While you're hacking in breakout rooms, we'll use Slack to keep in touch. Either Keegan (team lead) or Arianne (mentor) can pop into your breakout room if you get stuck on anything or need suggestions.
 
 | Time  | Description  | 
+| :------------- | :----------: |
 | 9:15am  | Introductions, icebreakers  |
 | 9:30am  | Project structure brainstorm and planning  |
 | 10:00am  | Outline tasks, document via GitHub issues  |
