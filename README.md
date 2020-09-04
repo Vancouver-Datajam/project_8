@@ -40,28 +40,20 @@ Zhi Yuh Ou Yang (Hacker)
 Here is a rough outline of our Datajam session. We can adjust as needed on the day of. While you're hacking in breakout rooms, we'll use Slack to keep in touch. Either Keegan (team lead) or Arianne (mentor) can pop into your breakout room if you get stuck on anything or need suggestions.
 
 | Time  | Description  | 
-|---|---|
 | 9:15am  | Introductions, icebreakers  |
-|---|---|
 | 9:30am  | Project structure brainstorm and planning  |
-|---|---|
 | 10:00am  | Outline tasks, document via GitHub issues  |
-|---|---|
 | 10:30am  | Hack/work on tasks |
 |   | Pairs/small groups in breakout rooms  |
 |   | Feel free to grab your lunch when you're hungry!  |
-|---|---|
 | 12:30pm  | Task check-in #1  |
 |   | Meet back up as a large group |
 |   | Evaluate progress, get input, adjust/add tasks as necessary  |
-|---|---|
 | 1:00pm  | Hack/work on tasks |
 |   | Pairs/small groups in breakout rooms  |
 |   | Feel free to grab coffee/snacks as needed!  |
-|---|---|
 | 3:30pm | Task check-in #2 |
 |   | Debugging, prioritizing remaining tasks  |
-|---|---|
 | 5:00pm | Final repository merging |
 |   | Prepare demo or slides  |
 | 6:30pm | Team lead will present our findings to large group  |
