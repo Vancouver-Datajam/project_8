@@ -24,16 +24,16 @@ Create a visualization and/or analysis that sheds light on the location and type
 
 ## Team
 
-Arianne Albert (Mentor)
-Sandy Besporstov (Hacker)
-Roshni Desai (Hacker)
-Kelly Liu (Hacker)
-Erika Luna (Hacker)
-Almas Khan (Hacker)
-Keegan Korthauer (Team Lead)
-Qomaruliati Setiawati (Hacker)
-Catherine Wong (Hacker)
-Zhi Yuh Ou Yang (Hacker)
+* Arianne Albert (Mentor)
+* Sandy Besporstov (Hacker)
+* Roshni Desai (Hacker)
+* Kelly Liu (Hacker)
+* Erika Luna (Hacker)
+* Almas Khan (Hacker)
+* Keegan Korthauer (Team Lead)
+* Qomaruliati Setiawati (Hacker)
+* Catherine Wong (Hacker)
+* Zhi Yuh Ou Yang (Hacker)
 
 ## Datajam schedule (September 12 2020)
 
