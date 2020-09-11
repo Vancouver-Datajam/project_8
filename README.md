@@ -41,8 +41,9 @@ Here is a rough outline of our Datajam session. We can adjust as needed on the d
 
 | Time  | Description  | 
 | :------------- | :---------- |
-| 9:15am  | Introductions, icebreakers  |
-| 9:30am  | Project structure brainstorm and planning  |
+| 8:30am  | Opening ceremony & keynote (large group - all teams)  |
+| 9:30am  | Team 8: Introductions, icebreakers  |
+| 9:45am  | Project structure brainstorm and planning  |
 | 10:00am  | Outline tasks, document via GitHub issues  |
 | 10:30am  | Hack/work on tasks |
 |   | Pairs/small groups in breakout rooms  |
