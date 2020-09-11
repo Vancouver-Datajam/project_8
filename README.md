@@ -49,7 +49,7 @@ Here is a rough outline of our Datajam session. We can adjust as needed on the d
 |   | Pairs/small groups in breakout rooms  |
 |   | Feel free to grab your lunch when you're hungry!  |
 | 12:30pm  | Task check-in #1  |
-|   | Meet back up as a large group |
+|   | Meet back up as a team |
 |   | Evaluate progress, get input, adjust/add tasks as necessary  |
 | 1:00pm  | Hack/work on tasks |
 |   | Pairs/small groups in breakout rooms  |
