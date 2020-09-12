@@ -94,6 +94,13 @@ stringr::str_replace_all(gcsc_clean$site_name, "\\u00AE|\\u00a9|\\u2122", "") # 
 gcsc_clean %>% group_by(nearest_city) %>% count()
 ```
 
+
+```{r}
+gcsc_clean <- gcsc_clean %>%
+  mutate(nearest_city=if_else(is.na(nearest_city),municipality,nearest_city))
+gcsc_clean$nearest_city <- stringr::str_replace_all(gcsc_clean$nearest_city,"City of","")
+```
+
 ### 2.2.2 Fix up dates
 
 ```{r}
@@ -107,6 +114,13 @@ gcsc_clean <- gcsc_clean%>%
 
 ```{r}
 gcsc_clean <- unique(gcsc_clean)
+```
+
+Remove 1 row that contains historical data without city
+```{r}
+gsc_empty_city <- gcsc_clean %>% filter(is.na(nearest_city))
+gsc_empty_city
+gcsc_clean <- gcsc_clean %>% filter(!(is.na(nearest_city)))
 ```
 
 ## 3.0 Save As csv
