@@ -2,7 +2,8 @@
 title: "GCSC Data Scraping"
 author: "Almas K."
 date: "9/12/2020"
-output: html_document:
+output: 
+  html_document:
   keep_md: true
 ---
 
@@ -111,6 +112,6 @@ gcsc_clean <- unique(gcsc_clean)
 ## 3.0 Save As csv
 
 ```{r}
-write_delim(gcsc_clean,here("cleaned_gcsc_data.xlsx"))
+write_csv(gcsc_clean,here("cleaned_gcsc_data.csv"))
 ```
 
