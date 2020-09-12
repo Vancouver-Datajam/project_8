@@ -1,0 +1,24 @@
+---
+title: "GCSC_data_viz"
+author: "Almas K."
+date: "9/12/2020"
+output: 
+  html_document:
+  keep_md: true
+---
+
+## 0.1 Libraries
+
+```{r libraries}
+library(tidyverse)
+library(here)
+library(janitor)
+library(lubridate)
+```
+
+## 1.0 Read in Data
+
+```{r}
+gcsc_dat <- read_csv(here("cleaned_gcsc_data.csv"))
+```
+
