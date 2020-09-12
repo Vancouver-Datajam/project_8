@@ -22,7 +22,7 @@ bans_prov_type <- ban_data %>%
 
 ggplot(bans_prov_type, aes(x = reorder(Province, -n), y = n, fill = Type)) +
   geom_bar(stat="identity") + 
-  labs(title = "Comparing the count and types of plastic bans by province (2007-2019)", y="Number of bans")
+  labs(title = "Comparing the count and types of plastic bans by province (2007-2019)", y="Number of bans", x="Province")
 
 
 #---------------------------------------------------------------------------------
