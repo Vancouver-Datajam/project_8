@@ -122,7 +122,7 @@ gsc_empty_city <- gcsc_clean %>% filter(is.na(nearest_city))
 gsc_empty_city
 gcsc_clean <- gcsc_clean %>% filter(!(is.na(nearest_city)))
 ```
-
+ 
 ## 3.0 Save As csv
 
 ```{r}

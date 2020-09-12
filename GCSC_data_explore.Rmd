@@ -1,5 +1,5 @@
 ---
-title: "GCSC_data_viz"
+title: "GCSC Data Exploration"
 author: "Almas K."
 date: "9/12/2020"
 output: 
@@ -12,13 +12,91 @@ output:
 ```{r libraries}
 library(tidyverse)
 library(here)
-library(janitor)
-library(lubridate)
 ```
 
 ## 1.0 Read in Data
 
 ```{r}
 gcsc_dat <- read_csv(here("cleaned_gcsc_data.csv"))
+```
+
+```{r}
+ban_dat <- read_csv(here("ban_data.csv"))
+```
+
+## 2.0 Summary Plots
+
+### 2.1  Types of plastic found by geographical location
+
+```{r}
+plastics <- gcsc_dat %>% 
+  pivot_longer(names_to = "plastic_type", 
+               values_to = "number_collected", 
+               cols = c(22:27, 30, 32:34, 37:39,42, 46 )) %>%
+  mutate(plastic_type_new = ifelse(str_detect(plastic_type, "bottles"), "bottles", plastic_type))
+
+plastics_group <-plastics %>% 
+  group_by(year, province, plastic_type_new) %>% 
+  summarise(total = sum(number_collected, na.rm = T))
+```
+
+```{r}
+bar_plot_type <- ggplot(plastics_group, 
+       aes(x=province,
+           y=total, 
+           group=plastic_type_new, 
+           fill = plastic_type_new)) + 
+  geom_col() +
+  labs(title="Amount of plastics by type and province")
+bar_plot_type
+ggsave(here("plastics_by_type_bar.png"),width = 10, height = 6)
+
+```
+```{r}
+ban_dat$Type <- as.factor(ban_dat$Type)
+levels(ban_dat$Type)
+```
+
+### 2.2 Time plots (Roshni)
+
+
+```{r}
+total_plastics_time <- plastics %>%
+  group_by(year, province) %>%
+  summarise(total = sum(number_collected, na.rm = T)) %>%
+  mutate(year_lab = as.character(year))
+ggplot(total_plastics_time,
+       aes(x=year_lab,
+           y=total,
+           group=province,
+           colour=province)) +
+ # facet_wrap(province ~.) +
+  geom_line()
+  #scale_x_continuous()
+ggsave(here("total_plastics_time.jpeg"), width = 10, height = 6 )
+
+```
+
+```{r}
+####Grouping by year & Province & type
+plastics_group <-plastics %>%
+  group_by(year, province, plastic_type_new) %>%
+  summarise(total = sum(number_collected, na.rm = T)) %>%
+  mutate(year_lab = as.character(year))
+
+prov_names <- unique(plastics_group$province)
+for (i in seq_along(prov_names)) {
+  chart <- subset(plastics_group, plastics_group$province == prov_names[i])
+ plot <- ggplot(chart,
+         aes(x=year_lab,
+             y=total,
+             group=plastic_type_new,
+             colour=plastic_type_new)) +
+    geom_line()+
+    theme(legend.position = "right") +
+   labs(title = paste("Total items by Type of Plastic for", prov_names[i]))
+ print(plot)
+ ggsave( here(paste("Total items by Type of Plastic for", prov_names[i], ".jpeg")), width = 10, height = 6 )
+  }
 ```
 
