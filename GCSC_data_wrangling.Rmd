@@ -1,0 +1,116 @@
+---
+title: "GCSC Data Scraping"
+author: "Almas K."
+date: "9/12/2020"
+output: html_document:
+  keep_md: true
+---
+
+
+## 0.1 Libraries
+
+```{r libraries}
+library(readxl)
+library(tidyverse)
+library(here)
+library(janitor)
+library(lubridate)
+```
+
+## 1.0 Read in Data
+
+```{r}
+gcsc_raw <- read_excel(here("2017-2019 Vancouver Datajam .xlsx"))
+```
+
+Look at data
+
+
+```{r}
+head(gcsc_raw)
+```
+```{r}
+dim(gcsc_raw)
+```
+
+```{r}
+gcsc_raw
+```
+
+## 2.0 Clean up data
+
+### 2.1 Remove empty columns
+
+```{r}
+gcsc_clean <- janitor::remove_empty(gcsc_raw,which="cols") %>% clean_names()
+```
+
+```{r}
+str(gcsc_clean)
+```
+
+```{r}
+gcsc_clean
+```
+
+```{r}
+dim(gcsc_clean)
+```
+
+```{r}
+dim(gcsc_raw)
+```
+
+### 2.2 Remove Anomalies
+
+#### 2.2.1 City Names
+```{r}
+gcsc_clean %>% group_by(nearest_city) %>% count()
+```
+
+
+```{r}
+gcsc_clean <- gcsc_clean %>%
+  mutate(nearest_city=if_else(grepl("Montr",nearest_city),"Montreal",nearest_city))
+```
+
+```{r}
+gcsc_clean <- gcsc_clean %>%
+ mutate_all(~(gsub("Ã¨|Ã","e",.))) %>%
+  mutate_all(~(gsub("eŽ","i",.)))
+```
+
+Remove Weird symbols from city and sitename
+```{r}
+gcsc_clean$nearest_city <- 
+stringr::str_replace_all(gcsc_clean$nearest_city, "\\u00AE|\\u00a9|\\u2122", "") # remove copyright symbol
+
+gcsc_clean$`Site Name` <- 
+stringr::str_replace_all(gcsc_clean$site_name, "\\u00AE|\\u00a9|\\u2122", "") # remove copyright symbol
+```
+
+```{r}
+gcsc_clean %>% group_by(nearest_city) %>% count()
+```
+
+### 2.2.2 Fix up dates
+
+```{r}
+gcsc_clean <- gcsc_clean%>% 
+  separate(cleanup_date, into = c('date', 'time'), sep=' ', remove = FALSE) %>% 
+  mutate(date = ymd(date), 
+         time = hms::as_hms(time))
+```
+
+### 2.2.3 Unique Rows
+
+```{r}
+gcsc_clean <- unique(gcsc_clean)
+```
+
+## 3.0 Save As csv
+
+```{r}
+write_delim(gcsc_clean,here("cleaned_gcsc_data.xlsx"))
+```
+
