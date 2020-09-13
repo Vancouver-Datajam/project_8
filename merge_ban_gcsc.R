@@ -1,19 +1,25 @@
 ##########################################
 ######Combine the data sets;
 #########################################
-​
+
+library(readr)
+library(dplyr)
+library(here)
+library(tidyverse)
+library(lubridate)
+
 gcsc_clean <- read_csv(file = "cleaned_gcsc_data.csv")
-​
-ban_data <- read_csv(file = here("project_8-master/ban_data.csv")) %>% 
+
+ban_data <- read_csv(file = here("ban_data.csv")) %>% 
   rename("ban_type" = Type,
          "effective_date" = `Effective Date`)
-​
+
 ban_wide <- ban_data %>% 
   pivot_wider(names_from = ban_type, 
               values_from = effective_date) %>% 
   mutate_at(3:5, funs(dmy)) %>% 
   mutate(ban_date = coalesce(`Plastics straws`, `Plastic bags`, `Food packaging`))
-​
+
 gcsc_ban_com <- gcsc_clean %>% 
   rename("City" = nearest_city, "Province" = province) %>% 
   left_join(ban_wide, by =c("City", "Province")) %>%
