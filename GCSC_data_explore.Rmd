@@ -148,6 +148,59 @@ for (i in seq_along(prov_names)) {
   }
 ```
 
+### 2.2 Time plots (Roshni) - adjusted for person*km
+
+
+```{r}
+total_plastics_time <- plastics %>%
+  group_by(year, province) %>%
+  summarise(total = sum(number_collected, na.rm = T),
+            person = sum(adults_2017_onwards_participant_count, na.rm=T),
+            totkm = sum(kilometers, na.rm=T)) %>%
+  mutate(amts_personkm=total/(person*totkm)) %>%
+  mutate(year_lab = as.character(year))
+ggplot(total_plastics_time,
+       aes(x=year_lab,
+           y=amts_personkm,
+           group=province,
+           colour=province)) +
+ # facet_wrap(province ~.) +
+  geom_line()+
+  scale_y_log10()
+ # scale_colour_manual(values=myCol)
+ggsave(here("total_plastics_time_adjusted.jpeg"), width = 10, height = 6 )
+
+
+```
+
+
+```{r}
+####Grouping by year & Province & type
+plastics_group <-plastics %>%
+  group_by(year, province, plastic_type_new) %>%
+    summarise(total = sum(number_collected, na.rm = T),
+            person = sum(adults_2017_onwards_participant_count, na.rm=T),
+            totkm = sum(kilometers, na.rm=T)) %>%
+  mutate(amts_personkm=total/(person*totkm)) %>%
+  mutate(year_lab = as.character(year))
+
+prov_names <- unique(plastics_group$province)
+for (i in seq_along(prov_names)) {
+  chart <- subset(plastics_group, plastics_group$province == prov_names[i])
+ plot <- ggplot(chart,
+         aes(x=year_lab,
+             y=amts_personkm,
+             group=plastic_type_new,
+             colour=plastic_type_new)) +
+    geom_line()+
+    theme(legend.position = "right") +
+   labs(title = paste("Total items by Type of Plastic for", prov_names[i]))+
+   scale_y_log10()
+ print(plot)
+ ggsave( here(paste("Total items by Type of Plastic for", prov_names[i], "_adjusted.jpeg")), width = 10, height = 6 )
+  }
+```
+
 
 
 
@@ -158,6 +211,7 @@ for (i in seq_along(prov_names)) {
 plastics_rates <- gcsc_dat %>%
   mutate(amts_person=kilograms/adults_2017_onwards_participant_count) %>%
   mutate(ppl_km=adults_2017_onwards_participant_count/kilometers) %>%
+  mutate(amts_personkm=kilograms/(adults_2017_onwards_participant_count*kilometers)) %>%
   mutate(glass_bottle_kg=glass_beverage_bottles/kilograms) %>%
   mutate(year_lab = as.character(year))
 ```
@@ -187,3 +241,19 @@ plastics_rates %>%
 ggsave(here("ppl_km_time.jpeg"))
 ```
 
+
+```{r}
+plastics_rates %>% 
+  ggplot(aes(x=province,y=amts_personkm,col=year_lab)) +
+  geom_boxplot()+ 
+  scale_y_log10()+
+  labs(title="Amount per person*km per province over time")
+ggsave(here("amts_ppl_km_time.jpeg"))
+```
+
+
+# Ban data
+
+```{r}
+knitr::include_graphics(c("bans.png","bans_province.png", "bans_year.png", "bans_year_prov.png"))
+```
