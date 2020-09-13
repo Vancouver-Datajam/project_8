@@ -28,6 +28,7 @@ ban_dat <- read_csv(here("ban_data.csv"))
 
 ### 2.1  Types of plastic found by geographical location
 
+
 ```{r}
 plastics <- gcsc_dat %>% 
   pivot_longer(names_to = "plastic_type", 
@@ -46,6 +47,7 @@ bar_plot_type <- ggplot(plastics_group,
            y=total, 
            group=plastic_type_new, 
            fill = plastic_type_new)) + 
+  scale_y_log10()+
   geom_col() +
   labs(title="Amount of plastics by type and province")
 bar_plot_type
@@ -53,8 +55,33 @@ ggsave(here("plastics_by_type_bar.png"),width = 10, height = 6)
 
 ```
 ```{r}
-ban_dat$Type <- as.factor(ban_dat$Type)
-levels(ban_dat$Type)
+plastics_group2 <-plastics %>% 
+  group_by(year, province, plastic_type_new) %>% 
+  summarise(total_kg = sum(kilograms,na.rm=T),
+            item_kg=sum(number_collected, na.rm = T)/total_kg) %>%
+    mutate(year_lab = as.character(year))
+plastics_group2
+
+bar_plot_type2 <- ggplot(plastics_group2, 
+       aes(x=province,
+           y=total_kg  )) + 
+  scale_y_log10()+
+  geom_col() +
+  labs(title="Kg of plastics by province")
+bar_plot_type2
+ggsave(here("plastics_bar_kg.png"),width = 10, height = 6)
+```
+
+```{r}
+bar_plot_type2 <- ggplot(plastics_group2, 
+       aes(x=province,
+           y=item_kg, 
+           group=plastic_type_new, 
+           fill = plastic_type_new)) + 
+  geom_col() +
+  labs(title="Type of plastic by kg collected and province")
+bar_plot_type2
+ggsave(here("kg_plastics_by_type_bar.png"),width = 10, height = 6)
 ```
 
 ### 2.2 Time plots (Roshni)
@@ -71,9 +98,29 @@ ggplot(total_plastics_time,
            group=province,
            colour=province)) +
  # facet_wrap(province ~.) +
-  geom_line()
-  #scale_x_continuous()
+  geom_line()+
+  scale_y_log10()
+ # scale_colour_manual(values=myCol)
 ggsave(here("total_plastics_time.jpeg"), width = 10, height = 6 )
+
+
+```
+
+```{r}
+kg_plastics_time <- plastics %>%
+  group_by(year, province) %>%
+  summarise(total_kg = sum(kilograms, na.rm = T)) %>%
+  mutate(year_lab = as.character(year))
+ggplot(kg_plastics_time,
+       aes(x=year_lab,
+           y=total_kg,
+           group=province,
+           colour=province)) +
+  geom_line()+
+  scale_y_log10()
+kg_plastics_time
+ggsave(here("kg_plastics_time.jpeg"), width = 10, height = 6 )
+
 
 ```
 
@@ -94,9 +141,49 @@ for (i in seq_along(prov_names)) {
              colour=plastic_type_new)) +
     geom_line()+
     theme(legend.position = "right") +
-   labs(title = paste("Total items by Type of Plastic for", prov_names[i]))
+   labs(title = paste("Total items by Type of Plastic for", prov_names[i]))+
+   scale_y_log10()
  print(plot)
  ggsave( here(paste("Total items by Type of Plastic for", prov_names[i], ".jpeg")), width = 10, height = 6 )
   }
+```
+
+
+
+
+
+## 3.0 Rates
+
+```{r}
+plastics_rates <- gcsc_dat %>%
+  mutate(amts_person=kilograms/adults_2017_onwards_participant_count) %>%
+  mutate(ppl_km=adults_2017_onwards_participant_count/kilometers) %>%
+  mutate(glass_bottle_kg=glass_beverage_bottles/kilograms) %>%
+  mutate(year_lab = as.character(year))
+```
+
+```{r}
+mean_amts <- plastics_rates %>% group_by(year_lab, province) %>%
+  summarize(mean_amts_person=mean(amts_person, na.rm = T)
+            , mean(ppl_km,na.rm = T),mean(glass_bottle_kg,na.rm = T))
+mean_amts
+```
+
+```{r}
+plastics_rates %>% 
+  ggplot(aes(x=province,y=amts_person,col=year_lab)) +
+  geom_boxplot()+ 
+  coord_cartesian(ylim=c(0,20))+
+  labs(title="Amount per person per province over time")
+ggsave(here("amts_person_time.jpeg"))
+```
+
+```{r}
+plastics_rates %>% 
+  ggplot(aes(x=province,y=ppl_km,col=year_lab)) +
+  geom_boxplot()+ 
+   coord_cartesian(ylim=c(0,300))+
+  labs(title="People per km per province over time")
+ggsave(here("ppl_km_time.jpeg"))
 ```
 
